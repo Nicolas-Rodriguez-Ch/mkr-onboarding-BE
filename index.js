@@ -26,23 +26,25 @@ app.post("/api/tasks", (req, res) => {
 app.put("/api/tasks/:id", (req, res) => {
   const { id } = req.params;
   const { task } = req.body;
-  table.update({ id: id, task: task, check: false });
-  const record = table.findById(id);
-  res.status(202).json({ ...record });
+  const updateTask = { id: id, task: task, check: false }
+  table.update(updateTask);
+  //const record = table.findById(id);
+  res.status(202).json({ ...updateTask });
 });
 
 // Marca como completada una tarea
 app.put("/api/tasks", (req, res) => {
   const { id, task, check } = req.body;
-  if (check) {
-    table.update({ id: id, task: task, check: false });
-    const record = table.findById(id);
-    return res.status(202).json({ ...record });
-  } else {
-    table.update({ id: id, task: task, check: true });
-    const record = table.findById(id);
-    return res.status(202).json({ ...record });
-  }
+  const result = table.findById(id)
+  table.update({ ...result, check: !result.check });
+  return res.status(202).json({ ...result, check: !result.check });
+
+  // if (check) {
+  // } else {
+  //   table.update({ id: id, task: task, check: true });
+  //   const record = table.findById(id);
+  //   return res.status(202).json({ ...record });
+  // }
 });
 
 
