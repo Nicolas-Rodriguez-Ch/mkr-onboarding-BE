@@ -39,12 +39,6 @@ app.put("/api/tasks", (req, res) => {
   table.update({ ...result, check: !result.check });
   return res.status(202).json({ ...result, check: !result.check });
 
-  // if (check) {
-  // } else {
-  //   table.update({ id: id, task: task, check: true });
-  //   const record = table.findById(id);
-  //   return res.status(202).json({ ...record });
-  // }
 });
 
 
