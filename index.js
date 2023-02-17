@@ -19,26 +19,29 @@ app.post("/api/tasks", (req, res) => {
   const { task } = req.body;
   if (!task) return res.status(400).json({ error: "You must pass a task" });
   const r1 = table.insert({ task: task, check: false });
-  res.status(202).json({ message: "Recieved succesfully" });
+  res.status(202).json({ ...r1 });
 });
 
-//Cambia unatarea individual por params
+//Cambia una tarea individual por params
 app.put("/api/tasks/:id", (req, res) => {
   const { id } = req.params;
   const { task } = req.body;
   table.update({ id: id, task: task, check: false });
-  res.status(202).json({ message: "updated succesfully" });
+  const record = table.findById(id);
+  res.status(202).json({ ...record });
 });
 
-// Marca como complatada una tarea
+// Marca como completada una tarea
 app.put("/api/tasks", (req, res) => {
   const { id, task, check } = req.body;
   if (check) {
     table.update({ id: id, task: task, check: false });
-    return res.status(202).json({ message: "task completed" });
+    const record = table.findById(id);
+    return res.status(202).json({ ...record });
   } else {
     table.update({ id: id, task: task, check: true });
-    return res.status(202).json({ message: "task completed" });
+    const record = table.findById(id);
+    return res.status(202).json({ ...record });
   }
 });
 
@@ -46,8 +49,9 @@ app.put("/api/tasks", (req, res) => {
 //Borra una tarea de la BD
 app.delete("/api/tasks/:id", (req, res) => {
   const { id } = req.params;
+  const record = table.findById(id);
   table.remove(id);
-  res.status(202).json({ message: "Deleted succesfully" });
+  res.status(202).json({ ...record });
 });
 
 app.listen(8000, () => console.log("listening on port 8000"));
