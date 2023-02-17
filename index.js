@@ -26,7 +26,7 @@ app.post("/api/tasks", (req, res) => {
 app.put("/api/tasks/:id", (req, res) => {
   const { id } = req.params;
   const { task } = req.body;
-  const updateTask = { id: id, task: task, check: false }
+  const updateTask = { id: parseInt(id), task: task, check: false }
   table.update(updateTask);
   //const record = table.findById(id);
   res.status(202).json({ ...updateTask });
